@@ -12,14 +12,16 @@ import {
 
 } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-import { REACT_APP_BASE_URL} from "chk"
+import { REACT_APP_BASE_URL } from "chk";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 const SCREENWIDTH = Dimensions.get('window').width;
 const SCREENHEIGHT = Dimensions.get('window').height;
 const data = [
-    { label: 'Cash', value: 'cash' },
-    { label: 'Bank', value: 'bank' },
+    { label: 'Cash', value: 'C' },
+    { label: 'Bank', value: 'B' },
 ];
 export function RequestScreen({ navigation }) {
     const [amount, setAmount] = useState(null)
@@ -28,20 +30,31 @@ export function RequestScreen({ navigation }) {
 
     const fetchRequest = async () => {
         try {
-            console.log(REACT_APP_BASE_URL)
-            var myHeaders = new Headers();
-            myHeaders.append("authorization", "token a8c4fb963aa9f975a3ca86a371e17148494ca738");
 
-            var requestOptions = {
-                method: 'GET',
-                headers: myHeaders,
-                redirect: 'follow'
-            };
-            const response = await fetch(REACT_APP_BASE_URL +  "/v1/api/requests?type=B", requestOptions)
-            // const response = await fetch("http://10.0.2.2:8000/v1/api/requests?type=B", requestOptions)
-            // const response = await fetch("https://api.publicapis.org/entries")
-            const json = await response.json();
-            console.log(json)
+            const token = await AsyncStorage.getItem('token')
+            console.log(token)
+            if (token !== null) {
+                var myHeaders = new Headers();
+                myHeaders.append("authorization", `token ${token}`);
+                myHeaders.append("Content-Type", "application/json");
+
+                var raw = JSON.stringify({
+                    "amount": amount,
+                    "type": value
+                });
+
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
+                const response = await fetch(REACT_APP_BASE_URL + `/api/requests`, requestOptions)
+                const json = await response.json();
+                console.log(json)
+            }
+
+
         } catch (error) {
             console.error(error);
         }

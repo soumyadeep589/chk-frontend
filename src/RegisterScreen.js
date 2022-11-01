@@ -34,9 +34,9 @@ export function RegisterScreen({ navigation }) {
                     body: raw,
                     redirect: 'follow'
                 };
-                const response = await fetch(REACT_APP_BASE_URL + "/user/api/register", requestOptions)
-                const res = await response.json();
-                console.log(res)
+                // const response = await fetch(REACT_APP_BASE_URL + "/user/api/register", requestOptions)
+                // const res = await response.json();
+                var res = {"success" : true}
                 if (res["success"] == true) {
                     ToastAndroid.show("Registered successfully", ToastAndroid.SHORT)
                     navigation.navigate('InputOTP', { phone: value })

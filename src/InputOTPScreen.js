@@ -7,15 +7,15 @@ import {
 } from 'react-native';
 import OTPInputView from '@twotalltotems/react-native-otp-input'
 import RnOtpTimer from 'rn-otp-timer';
+import { REACT_APP_BASE_URL } from "chk";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 const SCREENWIDTH = Dimensions.get('window').width;
 const SCREENHEIGHT = Dimensions.get('window').height;
 
-export function InputOTPScreen({ navigation }) {
-	const { state } = navigation.navigation;
-      console.log("PROPS" + state.params.phone);
+export function InputOTPScreen({ route, navigation }) {
 
 	return (
 		<View style={styles.container}>
@@ -30,17 +30,54 @@ export function InputOTPScreen({ navigation }) {
 				<Text style={styles.para}>
 					{"Enter the OTP sent to your mobile"}
 				</Text>
+				<Text>
+					{route.params.phone}
+				</Text>
 				<OTPInputView
-						style={{ width: '80%', height: 100 }}
-						pinCount={6}
-						autoFocusOnLoad
-						codeInputFieldStyle={styles.underlineStyleBase}
-						codeInputHighlightStyle={styles.underlineStyleHighLighted}
-						onCodeFilled={(code) => {
-							navigation.navigate("Request")
-						}}
+					style={{ width: '80%', height: 100 }}
+					pinCount={6}
+					autoFocusOnLoad
+					codeInputFieldStyle={styles.underlineStyleBase}
+					codeInputHighlightStyle={styles.underlineStyleHighLighted}
+					onCodeFilled={async (code) => {
+						try {
+							var myHeaders = new Headers();
+							myHeaders.append("Content-Type", "application/json");
 
-					/>
+							var raw = JSON.stringify({
+								"phone": route.params.phone,
+								"otp": code
+							});
+
+							var requestOptions = {
+								method: 'POST',
+								headers: myHeaders,
+								body: raw,
+								redirect: 'follow'
+							};
+							const response = await fetch(REACT_APP_BASE_URL + "/user/api/verify-otp", requestOptions)
+							const res = await response.json();
+							if (res["success"] == true) {
+								var value = res["data"]["token"]
+								try {
+									await AsyncStorage.setItem('token', value)
+								} catch (e) {
+									console.log("error", e)
+								} 1
+								ToastAndroid.show("Phone number verified", ToastAndroid.SHORT)
+								navigation.navigate("Request")
+							}
+							else {
+								ToastAndroid.show(res["error"], ToastAndroid.SHORT)
+							}
+						} catch (error) {
+							console.error(error);
+							ToastAndroid.show("Something went wrong, please try again", ToastAndroid.SHORT)
+						}
+
+					}}
+
+				/>
 				<View style={styles.OtpTimeResendContainer}>
 					<Text style={styles.ExpireText}>
 						{"Code will expire in"}
