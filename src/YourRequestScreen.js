@@ -23,7 +23,7 @@ const data = [
     { label: 'Cash', value: 'C' },
     { label: 'Bank', value: 'B' },
 ];
-export function RequestScreen({ navigation }) {
+export function YourRequestScreen({ navigation }) {
     const [amount, setAmount] = useState(null)
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);

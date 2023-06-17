@@ -57,19 +57,20 @@ export function InputOTPScreen({ route, navigation }) {
 							};
 							const response = await fetch(REACT_APP_BASE_URL + "/user/api/verify-otp", requestOptions)
 							const res = await response.json();
-							if (res["success"] == true) {
-								var value = res["data"]["token"]
-								try {
-									await AsyncStorage.setItem('token', value)
-								} catch (e) {
-									console.log("error", e)
-								} 1
-								ToastAndroid.show("Phone number verified", ToastAndroid.SHORT)
-								navigation.navigate("Request")
-							}
-							else {
-								ToastAndroid.show(res["error"], ToastAndroid.SHORT)
-							}
+							// if (res["success"] == true) {
+							// 	var value = res["data"]["token"]
+							// 	try {
+							// 		await AsyncStorage.setItem('token', value)
+							// 	} catch (e) {
+							// 		console.log("error", e)
+							// 	} 1
+							// 	ToastAndroid.show("Phone number verified", ToastAndroid.SHORT)
+							// 	navigation.navigate("Request")
+							// }
+							// else {
+							// 	ToastAndroid.show(res["error"], ToastAndroid.SHORT)
+							// }
+							navigation.navigate("Request")
 						} catch (error) {
 							console.error(error);
 							ToastAndroid.show("Something went wrong, please try again", ToastAndroid.SHORT)

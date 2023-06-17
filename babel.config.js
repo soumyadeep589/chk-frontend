@@ -12,6 +12,11 @@ module.exports = {
         safe: true,
         allowUndefined: true
       }
+    ],
+    [
+      'react-native-reanimated/plugin', {
+        relativeSourceLocation: true,
+      },
     ]
   ]
 };
