@@ -2,46 +2,46 @@ export default [
     {
         name:'Home',
         iconType:'Material',
-        iconName:'face-profile'
+        iconName:'home'
     },
     {
         name:'Add Request',
         iconType:'Material',
-        iconName:'face-profile'
+        iconName:'money'
     },
     {
         name:'Your Requests',
         iconType:'Material',
-        iconName:'face-profile'
+        iconName:'money'
     },
     {
         name:'About Us',
         iconType:'Feather',
-        iconName:'settings'
+        iconName:'users'
     },
     {
         name:'Privacy Policy',
         iconType:'Material',
-        iconName:'bookmark-check-outline'
+        iconName:'unlock'
     },
     {
         name:'Contact Us',
         iconType:'Material',
-        iconName:'bookmark-check-outline'
+        iconName:'phone'
     },
     {
         name:'Terms & Conditions',
         iconType:'Material',
-        iconName:'bookmark-check-outline'
+        iconName:'newspaper-o'
     },
     {
         name:'Logout',
         iconType:'Material',
-        iconName:'bookmark-check-outline'
+        iconName:'newspaper-o'
     },
     {
         name:'Refer a Friend',
         iconType:'FontAwesome5',
-        iconName:'user-friends'
+        iconName:'newspaper-o'
     }
  ]

@@ -23,7 +23,7 @@ const data = [
     { label: 'Cash', value: 'C' },
     { label: 'Bank', value: 'B' },
 ];
-export function RequestScreen({ navigation }) {
+export function AboutUsScreen({ navigation }) {
     const [amount, setAmount] = useState(null)
     const [value, setValue] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
@@ -77,7 +77,7 @@ export function RequestScreen({ navigation }) {
                     </Text>
                 </View>
 
-                <Image source={require('./assets/images/transfer_money.png')} style={styles.image} />
+                <Image source={require('../assets/images/transfer_money.png')} style={styles.image} />
                 <View style={styles.inputDropDownContainer}>
                     <TextInput
                         style={styles.input}
