@@ -23,63 +23,135 @@ export function YourRequestScreen({ route, navigation }) {
         { key: 'active', title: 'Active' },
         { key: 'history', title: 'History' },
     ])
-    const [requests, setRequests] = useState([]);
-    const [cashRequests, setcashRequests] = useState([]);
-    const [bankRequests, setbankRequests] = useState([]);
+    const [requestType, setRequestType] = useState('');
+    const [requestId, setRequestId] = useState('');
+    const [callList, setCallList] = useState([]);
+    const [requestHistories, setRequestHistories] = useState([]);
+    const [amount, setAmount] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedPhoneNumber, setSelectedPhoneNumber] = useState('');
+    const [closedToId, setClosedToId] = useState('');
+    const [number, setNumber] = useState('');
+    const [action, setAction] = useState('update');
 
     useEffect(() => {
-        // fetchRequest();
-        // fetchCashRequest();
-        // fetchBankRequest();
+        fetchActiveRequest();
+        fetchRequestHistories();
     }, []);
 
-    // requests = [
-    // 	{ id: '1', name: 'Component 1', amount: 100, noOfTransactions: 121 },
-    // 	{ id: '2', name: 'Component 2', amount: 200, noOfTransactions: 122 },
-    // 	{ id: '4', name: 'Component 3', amount: 300, noOfTransactions: 123 },
-    // 	{ id: '5', name: 'Component 4', amount: 400, noOfTransactions: 124 },
-    // 	{ id: '6', name: 'Component 5', amount: 500, noOfTransactions: 125 },
-    // 	{ id: '7', name: 'Component 6', amount: 600, noOfTransactions: 126 },
-    // 	{ id: '8', name: 'Component 7', amount: 700, noOfTransactions: 127 },
-    // 	// Add more items as needed
-    // ];
+    const CallModal = ({ requestId, closedToId, visible, onClose, action }) => {
 
-    const CallModal = ({ phoneNumber, visible, onClose }) => {
-        return (
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={visible}
-                onRequestClose={() => onClose()}
-            >
-                <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Please call to meet and exchange money</Text>
-                        <View style={styles.modalButtonContainer}>
-                            <Pressable
-                                style={[styles.button, styles.buttonClose]}
-                                onPress={() => onClose()}
-                            >
-                                <Text style={styles.textStyle}>Cancel</Text>
-                            </Pressable>
-                            <Pressable
-                                style={[styles.button, styles.buttonClose]}
-                                onPress={() => handleCall(phoneNumber)}
-                            >
-                                <Text style={styles.textStyle}>Call</Text>
-                            </Pressable>
+        if (action === "close") {
+
+            return (
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={visible}
+                    onRequestClose={() => onClose()}
+                >
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <Text style={styles.modalText}>Are you sure, you want to close this request with Samiran?</Text>
+                            <View style={styles.modalButtonContainer}>
+                                <Pressable
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => onClose()}
+                                >
+                                    <Text style={styles.textStyle}>Cancel</Text>
+                                </Pressable>
+                                <Pressable
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => closeRequest(requestId, closedToId)}
+                                >
+                                    <Text style={styles.textStyle}>Close</Text>
+                                </Pressable>
+                            </View>
+
                         </View>
-
                     </View>
-                </View>
-            </Modal>
-        );
+                </Modal>
+            );
+
+        }
+
+        else if (action === "delete") {
+
+            return (
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={visible}
+                    onRequestClose={() => onClose()}
+                >
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <Text style={styles.modalText}>Are you sure, you want to delete your request?</Text>
+                            <View style={styles.modalButtonContainer}>
+                                <Pressable
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => onClose()}
+                                >
+                                    <Text style={styles.textStyle}>Cancel</Text>
+                                </Pressable>
+                                <Pressable
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => deleteRequest(requestId)}
+                                >
+                                    <Text style={styles.textStyle}>delete</Text>
+                                </Pressable>
+                            </View>
+
+                        </View>
+                    </View>
+                </Modal>
+            );
+
+        }
+
+        else {
+
+            return (
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={visible}
+                    onRequestClose={() => onClose()}
+                >
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <Text style={styles.modalText}>Enter the new amount</Text>
+                            <TextInput
+                                keyboardType="numeric"
+                                value={number}
+                                onChangeText={handleNumberChange}
+                                placeholder="Enter a number"
+                            />
+                            <View style={styles.modalButtonContainer}>
+                                <Pressable
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => onClose()}
+                                >
+                                    <Text style={styles.textStyle}>Cancel</Text>
+                                </Pressable>
+                                <Pressable
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => updateRequest(requestId)}
+                                >
+                                    <Text style={styles.textStyle}>update</Text>
+                                </Pressable>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+            );
+
+        }
+
     };
 
-    const handleOpenModal = (phoneNumber) => {
-        setSelectedPhoneNumber(phoneNumber);
+    const handleOpenModal = (id, action) => {
+        setClosedToId(id)
+        setAction(action)
         setModalVisible(true);
     };
 
@@ -87,46 +159,90 @@ export function YourRequestScreen({ route, navigation }) {
         setModalVisible(false);
     };
 
-
+    const handleNumberChange = (value) => {
+        setNumber(value);
+    };
 
     const renderItem = ({ item }) => {
         return (
             <ScrollView style={styles.item}>
                 <View>
-                    <Text>{item.opened_by.name}</Text>
-                    <Text>{item.opened_by.transactions + "Transacted"}</Text>
+                    <Text>{item.called_by.name}</Text>
+                    <Text>{"tried calling you"}</Text>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => handleOpenModal(item.called_by.id, "close")}>
+                        <Text style={styles.buttonText}> Close </Text>
+                    </TouchableOpacity>
                 </View>
+            </ScrollView>
+        );
+    };
+
+    const renderHistory = ({ item }) => {
+        return (
+            <ScrollView style={styles.item}>
                 <View>
                     <View>
                         <Text>{"Amount"}</Text>
                         <Text>{item.amount}</Text>
                     </View>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => handleOpenModal(item.opened_by.phone)}>
-                        <Text style={styles.buttonText}> Accept </Text>
-                    </TouchableOpacity>
+                    <View>
+                        {item.type === 'B' ? (
+                            <Text>{"In Bank"}</Text>
+                        ) : (
+                            <Text>{"In Cash"}</Text>
+                        )}
+                    </View>
+                    <View>
+                        <Text>{item.updated_on}</Text>
+                        {item.status === 'CL' ? (
+                            <Text>{"Closed"}</Text>
+                        ) : (
+                            <Text>{"Deleted"}</Text>
+                        )}
+                    </View>
                 </View>
-
             </ScrollView>
         );
     };
 
     const ActiveRoute = () => (
         <View style={{ flex: 1, backgroundColor: '#ff4081' }}>
-            <FlatList
-                data={cashRequests}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-            />
+            <View style={styles.cardContainer}>
+                <View style={styles.amountContainer}>
+                    <Text>{"Amount"}</Text>
+                    <Text>{amount}</Text>
+                </View>
+                <Text>{"In " + requestType}</Text>
+                <View style={styles.divider} />
+                <FlatList
+                    data={callList}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                />
+            </View>
+            <View>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={showDeleteModal}>
+                    <Text style={styles.buttonText}> Delete </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={showUpdateModal}>
+                    <Text style={styles.buttonText}> Update </Text>
+                </TouchableOpacity>
+            </View>
+
         </View>
     );
 
     const HistoryRoute = () => (
         <View style={{ flex: 1, backgroundColor: '#ff4081' }}>
             <FlatList
-                data={bankRequests}
-                renderItem={renderItem}
+                data={requestHistories}
+                renderItem={renderHistory}
                 keyExtractor={(item) => item.id}
             />
         </View>
@@ -138,17 +254,15 @@ export function YourRequestScreen({ route, navigation }) {
         history: HistoryRoute,
     });
 
-    const acceptRequest = async (item) => {
-        setModalVisible(true)
-        console.log("from accept Request" + item.name);
-    }
-    const deleteRequest = () => {
+    const showDeleteModal = () => {
+        handleOpenModal(requestId, "delete")
         console.log("delete request")
     }
-    const updateRequest = () => {
+    const showUpdateModal = () => {
+        handleOpenModal(requestId, "update")
         console.log("update request")
     }
-    const fetchRequest = async () => {
+    const fetchActiveRequest = async () => {
         try {
 
             // const token = await AsyncStorage.getItem('token')
@@ -165,22 +279,18 @@ export function YourRequestScreen({ route, navigation }) {
                     headers: myHeaders,
                     redirect: 'follow'
                 };
-                let requestType;
-                if (route.params.requestType === "B") {
-                    requestType = "C"
-                    setIndex(1);
-                }
-                else {
-                    requestType = "B"
-                }
-                const response = await fetch(REACT_APP_BASE_URL + `/api/requests?type=${requestType}`, requestOptions)
+                const response = await fetch(REACT_APP_BASE_URL + `/api/requests/active`, requestOptions)
                 const resData = await response.json();
-                if (route.params.requestType === "B") {
-                    setbankRequests(resData)
+                setCallList(resData.call_list)
+                setAmount(resData.request.amount)
+                setRequestId(resData.request.id)
+                if (resData.request.type === "C") {
+                    setRequestType("cash")
                 }
-                else {
-                    setcashRequests(resData)
+                else if (resData.request.type === "B") {
+                    setRequestType("bank")
                 }
+                console.log(requestType)
                 console.log("here", resData)
             }
         }
@@ -190,7 +300,7 @@ export function YourRequestScreen({ route, navigation }) {
         }
     };
 
-    const fetchCashRequest = async () => {
+    const fetchRequestHistories = async () => {
         try {
 
             // const token = await AsyncStorage.getItem('token')
@@ -207,11 +317,45 @@ export function YourRequestScreen({ route, navigation }) {
                     headers: myHeaders,
                     redirect: 'follow'
                 };
-                let requestType = route.params.requestType
-                const response = await fetch(REACT_APP_BASE_URL + `/api/requests?type=B`, requestOptions)
+                const response = await fetch(REACT_APP_BASE_URL + `/api/requests/history`, requestOptions)
                 const resData = await response.json();
-                setcashRequests(resData);
+                setRequestHistories(resData)
                 console.log("here", resData)
+            }
+        }
+
+        catch (error) {
+            console.error(error);
+        }
+    };
+
+    const closeRequest = async (requestId, closedToId) => {
+        try {
+
+            // const token = await AsyncStorage.getItem('token')
+            const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
+            console.log(token)
+            if (token !== null) {
+                // if (token === null) {
+                var myHeaders = new Headers();
+                myHeaders.append("authorization", `token ${token}`);
+                myHeaders.append("Content-Type", "application/json");
+
+                var raw = JSON.stringify({
+                    "closed_to": closedToId,
+                    "status": "CL"
+                });
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
+                console.log(requestId, closedToId, "here")
+                // const response = await fetch(REACT_APP_BASE_URL + `/api/requests/${requestId}/close`, requestOptions)
+                // const resData = await response.json();
+                // console.log("here", resData)
+                handleCloseModal()
             }
         }
 
@@ -221,7 +365,7 @@ export function YourRequestScreen({ route, navigation }) {
         }
     };
 
-    const fetchBankRequest = async () => {
+    const deleteRequest = async () => {
         try {
 
             // const token = await AsyncStorage.getItem('token')
@@ -234,14 +378,18 @@ export function YourRequestScreen({ route, navigation }) {
                 myHeaders.append("Content-Type", "application/json");
 
                 var requestOptions = {
-                    method: 'GET',
+                    method: 'POST',
                     headers: myHeaders,
                     redirect: 'follow'
                 };
-                const response = await fetch(REACT_APP_BASE_URL + `/api/requests?type=C`, requestOptions)
-                const resData = await response.json();
-                setbankRequests(resData);
+                // const response = await fetch(REACT_APP_BASE_URL + `/api/requests/${requestId}/delete`, requestOptions)
+                // const resData = await response.json();
                 console.log("here", resData)
+
+                // todo: go back to home or another page
+
+                // navigation.navigate('Home')
+                handleCloseModal()
             }
         }
 
@@ -251,9 +399,40 @@ export function YourRequestScreen({ route, navigation }) {
         }
     };
 
-    const handleCall = (phone) => {
-        console.log("phone", phone)
-        Linking.openURL(`tel:${phone}`);
+    const updateRequest = async () => {
+        try {
+
+            // const token = await AsyncStorage.getItem('token')
+            const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
+            console.log(token)
+            if (token !== null) {
+                // if (token === null) {
+                var myHeaders = new Headers();
+                myHeaders.append("authorization", `token ${token}`);
+                myHeaders.append("Content-Type", "application/json");
+
+                var raw = JSON.stringify({
+                    "amount": number,
+                });
+                var requestOptions = {
+                    method: 'PATCH',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
+                const response = await fetch(REACT_APP_BASE_URL + `/api/requests/${requestId}`, requestOptions)
+                const resData = await response.json();
+                console.log("here2", resData)
+
+                fetchActiveRequest()
+                handleCloseModal()
+            }
+        }
+
+
+        catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -264,19 +443,7 @@ export function YourRequestScreen({ route, navigation }) {
                 onIndexChange={setIndex}
                 initialLayout={{ width: layout.width }}
             />
-            <View>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={deleteRequest}>
-                    <Text style={styles.buttonText}> Delete </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={updateRequest}>
-                    <Text style={styles.buttonText}> Update </Text>
-                </TouchableOpacity>
-            </View>
-            <CallModal phoneNumber={selectedPhoneNumber} visible={modalVisible} onClose={handleCloseModal} />
+            <CallModal requestId={requestId} closedToId={closedToId} visible={modalVisible} onClose={handleCloseModal} action={action} />
         </View>
     );
 }

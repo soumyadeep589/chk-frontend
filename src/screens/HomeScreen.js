@@ -23,28 +23,17 @@ export function HomeScreen({ route, navigation }) {
 		{ key: 'cash', title: 'Cash' },
 		{ key: 'bank', title: 'Bank' },
 	])
-	const [requests, setRequests] = useState([]);
 	const [cashRequests, setcashRequests] = useState([]);
 	const [bankRequests, setbankRequests] = useState([]);
 	const [modalVisible, setModalVisible] = useState(false);
 	const [selectedPhoneNumber, setSelectedPhoneNumber] = useState('');
+	const [requestId, setRequestId] = useState('');
 
 	useEffect(() => {
 		fetchRequest();
 		fetchCashRequest();
 		fetchBankRequest();
 	}, []);
-
-	// requests = [
-	// 	{ id: '1', name: 'Component 1', amount: 100, noOfTransactions: 121 },
-	// 	{ id: '2', name: 'Component 2', amount: 200, noOfTransactions: 122 },
-	// 	{ id: '4', name: 'Component 3', amount: 300, noOfTransactions: 123 },
-	// 	{ id: '5', name: 'Component 4', amount: 400, noOfTransactions: 124 },
-	// 	{ id: '6', name: 'Component 5', amount: 500, noOfTransactions: 125 },
-	// 	{ id: '7', name: 'Component 6', amount: 600, noOfTransactions: 126 },
-	// 	{ id: '8', name: 'Component 7', amount: 700, noOfTransactions: 127 },
-	// 	// Add more items as needed
-	// ];
 
 	const CallModal = ({ phoneNumber, visible, onClose }) => {
 		return (
@@ -78,8 +67,9 @@ export function HomeScreen({ route, navigation }) {
 		);
 	};
 
-	const handleOpenModal = (phoneNumber) => {
+	const handleOpenModal = (phoneNumber, requestId) => {
 		setSelectedPhoneNumber(phoneNumber);
+		setRequestId(requestId);
 		setModalVisible(true);
 	};
 
@@ -103,7 +93,7 @@ export function HomeScreen({ route, navigation }) {
 					</View>
 					<TouchableOpacity
 						style={styles.button}
-						onPress={() => handleOpenModal(item.opened_by.phone)}>
+						onPress={() => handleOpenModal(item.opened_by.phone, item.id)}>
 						<Text style={styles.buttonText}> Accept </Text>
 					</TouchableOpacity>
 				</View>
@@ -138,9 +128,35 @@ export function HomeScreen({ route, navigation }) {
 		bank: BankRoute,
 	});
 
-	const acceptRequest = async (item) => {
-		setModalVisible(true)
-		console.log("from accept Request" + item.name);
+	const createCall = async () => {
+		try {
+
+			// const token = await AsyncStorage.getItem('token')
+			const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
+			console.log(token)
+			if (token !== null) {
+				// if (token === null) {
+				var myHeaders = new Headers();
+				myHeaders.append("authorization", `token ${token}`);
+				myHeaders.append("Content-Type", "application/json");
+				var raw = JSON.stringify({
+                    "request": requestId,
+                });
+				var requestOptions = {
+					method: 'POST',
+					headers: myHeaders,
+					body: raw,
+					redirect: 'follow'
+				};
+				const response = await fetch(REACT_APP_BASE_URL + `/api/calls`, requestOptions)
+				const resData = await response.json();
+				console.log("here", resData)
+			}
+		}
+
+		catch (error) {
+			console.error(error);
+		}
 	}
 
 	const fetchRequest = async () => {
@@ -161,7 +177,7 @@ export function HomeScreen({ route, navigation }) {
 					redirect: 'follow'
 				};
 				let requestType;
-				if (route.params.requestType === "B") {
+				if (route.params !== undefined && route.params.requestType === "B") {
 					requestType = "C"
 					setIndex(1);
 				}
@@ -170,7 +186,7 @@ export function HomeScreen({ route, navigation }) {
 				}
 				const response = await fetch(REACT_APP_BASE_URL + `/api/requests?type=${requestType}`, requestOptions)
 				const resData = await response.json();
-				if (route.params.requestType === "B") {
+				if (route.params !== undefined && route.params.requestType === "B") {
 					setbankRequests(resData)
 				}
 				else {
@@ -202,7 +218,6 @@ export function HomeScreen({ route, navigation }) {
 					headers: myHeaders,
 					redirect: 'follow'
 				};
-				let requestType = route.params.requestType
 				const response = await fetch(REACT_APP_BASE_URL + `/api/requests?type=B`, requestOptions)
 				const resData = await response.json();
 				setcashRequests(resData);
@@ -248,8 +263,13 @@ export function HomeScreen({ route, navigation }) {
 
 	const handleCall = (phone) => {
 		console.log("phone", phone)
+		createCall();
 		Linking.openURL(`tel:${phone}`);
 	};
+
+	const goToRequestPage = () => {
+		navigation.navigate("Add Request")
+	}
 
 	return (
 		<View style={styles.container}>
@@ -261,7 +281,7 @@ export function HomeScreen({ route, navigation }) {
 			/>
 			<TouchableOpacity
 				style={styles.button}
-				onPress={fetchRequest}>
+				onPress={goToRequestPage}>
 				<Text style={styles.buttonText}> Request </Text>
 			</TouchableOpacity>
 			<CallModal phoneNumber={selectedPhoneNumber} visible={modalVisible} onClose={handleCloseModal} />

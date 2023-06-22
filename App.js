@@ -1,11 +1,12 @@
 
 import 'react-native-gesture-handler';
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import AppNavigator from './src/AppNavigator';
+import { getFcmToken, notificationListener, requestUserPermission } from './src/notifications';
 
 
 // const Stack = createStackNavigator();
@@ -13,8 +14,23 @@ import AppNavigator from './src/AppNavigator';
 
 
 const App = () => {
+
+
+  const [generatedToken, setGeneratedToken] = useState();
   const name = 'John Doe'; // Replace with actual name
   const phoneNumber = '123-456-7890'; // Replace with actual phone number
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      const token = await getFcmToken();
+      if (token) {
+        setGeneratedToken(token);
+      }
+    };
+    void fetchToken();
+    void notificationListener();
+    void requestUserPermission();
+  }, []);
 
   return (
     <NavigationContainer>
@@ -22,49 +38,5 @@ const App = () => {
     </NavigationContainer>
   );
 };
-
-
-// function App() {
-//   return (
-//     // <NavigationContainer>
-//     //   <Stack.Navigator initialRouteName="Request">
-//     //     <Stack.Screen name="Home" component={HomeScreen} />
-//     //     <Stack.Screen name="Register" component={RegisterScreen} />
-//     //     <Stack.Screen name="Login" component={LoginScreen} />
-//     //     <Stack.Screen name="InputOTP" component={InputOTPScreen} />
-//     //     <Stack.Screen name="Request" component={RequestScreen} />
-//     //   </Stack.Navigator>
-//     // </NavigationContainer>
-//     <NavigationContainer>
-//       <Drawer.Navigator
-//         drawerType="front"
-//         initialRouteName="Your Requests"
-//         screenOptions={{
-//           activeTintColor: '#e91e63',
-//           itemStyle: { marginVertical: 10 },
-//         }}
-
-//       >
-//         {
-//           DrawerItems.map(drawer => <Drawer.Screen
-//             key={drawer.name}
-//             name={drawer.name}
-//             component={
-//               drawer.name === 'Home' ? HomeScreen
-//                 : drawer.name === 'Add Request' ? RequestScreen
-//                 : drawer.name === 'Your Requests' ? YourRequestScreen
-//                 : drawer.name === 'About Us' ? AboutUsScreen
-//                 : drawer.name === 'Privacy Policy' ? AboutUsScreen
-//                 : drawer.name === 'Contact Us' ? AboutUsScreen
-//                 : drawer.name === 'Terms & Conditions' ? AboutUsScreen
-//                 : drawer.name === 'Refer a Friend' ? AboutUsScreen
-//                   : LoginScreen
-//             }
-//           />)
-//         }
-//       </Drawer.Navigator>
-//     </NavigationContainer>
-//   );
-// }
 
 export default App;
