@@ -1,22 +1,50 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo, useMemo } from 'react';
 import {
     Button, View, Text,
     StyleSheet, KeyboardAvoidingView,
     TextInput, Dimensions, TouchableOpacity, ToastAndroid,
-    useWindowDimensions, FlatList, Alert, Modal, Pressable, Linking
+    useWindowDimensions, FlatList, Alert, Modal, Pressable, ActivityIndicator
 
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { TabView, SceneMap } from 'react-native-tab-view';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { useIsFocused } from '@react-navigation/native';
 import { REACT_APP_BASE_URL } from "chk";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const SCREENWIDTH = Dimensions.get('window').width;
 const SCREENHEIGHT = Dimensions.get('window').height;
 
+// const ModalContent = memo((buttonLoading, handleButtonPress, onClose) => {
+//     return (
+//         <View style={styles.modalButtonContainer}>
+//             <Pressable
+//                 style={[styles.modalButton, styles.buttonCancel]}
+//                 onPress={() => onClose()}
+//             >
+//                 <Text style={styles.modalButtonText}>Cancel</Text>
+//             </Pressable>
+//             <Pressable
+//                 disabled={buttonLoading}
+//                 style={[styles.modalButton, styles.buttonDelete]}
+//                 onPress={() => handleButtonPress()}
+//             >
+//                 {buttonLoading ? (
+//                     <ActivityIndicator size="small" color="#ffffff" />
+//                 ) : (
+//                     <Text style={styles.modalButtonText}>Delete</Text>
+//                 )}
+//             </Pressable>
+//         </View>
+//     );
+// });
+
+
 export function YourRequestScreen({ route, navigation }) {
 
     const layout = useWindowDimensions();
+    const isFocused = useIsFocused();
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
@@ -26,17 +54,34 @@ export function YourRequestScreen({ route, navigation }) {
     const [requestType, setRequestType] = useState('');
     const [requestId, setRequestId] = useState('');
     const [callList, setCallList] = useState([]);
+    const [activePresent, setActivePresent] = useState(false);
     const [requestHistories, setRequestHistories] = useState([]);
     const [amount, setAmount] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
     const [closedToId, setClosedToId] = useState('');
-    const [number, setNumber] = useState('');
-    const [action, setAction] = useState('update');
+    const [closedToName, setClosedToName] = useState('');
+    const [action, setAction] = useState('delete');
+    const [loading, setLoading] = useState(true);
+    const [buttonLoading, setButtonLoading] = useState(false);
 
     useEffect(() => {
-        fetchActiveRequest();
-        fetchRequestHistories();
-    }, []);
+        if (isFocused) {
+            // Perform actions when the screen is focused
+            setLoading(true);
+            fetchActiveRequest();
+            fetchRequestHistories();
+        }
+
+    }, [isFocused]);
+
+
+    // const handleButtonPress = () => {
+    //     setButtonLoading(true);
+    //     // Perform asynchronous task (e.g., API call) here
+    //     setTimeout(() => {
+    //         setButtonLoading(false);
+    //     }, 2000);
+    // };
 
     const CallModal = ({ requestId, closedToId, visible, onClose, action }) => {
 
@@ -51,53 +96,19 @@ export function YourRequestScreen({ route, navigation }) {
                 >
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <Text style={styles.modalText}>Are you sure, you want to close this request with Samiran?</Text>
+                            <Text style={styles.modalText}>Are you sure, you want to close this request with <Text style={{ color: '#5C54DF', fontSize: 20 }}>{closedToName}</Text>?</Text>
                             <View style={styles.modalButtonContainer}>
                                 <Pressable
-                                    style={[styles.button, styles.buttonClose]}
+                                    style={[styles.modalButton, styles.buttonCancel]}
                                     onPress={() => onClose()}
                                 >
-                                    <Text style={styles.textStyle}>Cancel</Text>
+                                    <Text style={styles.modalButtonText}>Cancel</Text>
                                 </Pressable>
                                 <Pressable
-                                    style={[styles.button, styles.buttonClose]}
+                                    style={[styles.modalButton, styles.modalButtonClose]}
                                     onPress={() => closeRequest(requestId, closedToId)}
                                 >
-                                    <Text style={styles.textStyle}>Close</Text>
-                                </Pressable>
-                            </View>
-
-                        </View>
-                    </View>
-                </Modal>
-            );
-
-        }
-
-        else if (action === "delete") {
-
-            return (
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={visible}
-                    onRequestClose={() => onClose()}
-                >
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
-                            <Text style={styles.modalText}>Are you sure, you want to delete your request?</Text>
-                            <View style={styles.modalButtonContainer}>
-                                <Pressable
-                                    style={[styles.button, styles.buttonClose]}
-                                    onPress={() => onClose()}
-                                >
-                                    <Text style={styles.textStyle}>Cancel</Text>
-                                </Pressable>
-                                <Pressable
-                                    style={[styles.button, styles.buttonClose]}
-                                    onPress={() => deleteRequest(requestId)}
-                                >
-                                    <Text style={styles.textStyle}>delete</Text>
+                                    <Text style={styles.modalButtonText}>Close</Text>
                                 </Pressable>
                             </View>
 
@@ -119,27 +130,29 @@ export function YourRequestScreen({ route, navigation }) {
                 >
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <Text style={styles.modalText}>Enter the new amount</Text>
-                            <TextInput
-                                keyboardType="numeric"
-                                value={number}
-                                onChangeText={handleNumberChange}
-                                placeholder="Enter a number"
-                            />
+                            <Text style={styles.modalText}>Are you sure, you want to delete your request?</Text>
                             <View style={styles.modalButtonContainer}>
                                 <Pressable
-                                    style={[styles.button, styles.buttonClose]}
+                                    style={[styles.modalButton, styles.buttonCancel]}
                                     onPress={() => onClose()}
                                 >
-                                    <Text style={styles.textStyle}>Cancel</Text>
+                                    <Text style={styles.modalButtonText}>Cancel</Text>
                                 </Pressable>
                                 <Pressable
-                                    style={[styles.button, styles.buttonClose]}
-                                    onPress={() => updateRequest(requestId)}
+                                    disabled={buttonLoading}
+                                    style={[styles.modalButton, styles.buttonDelete]}
+                                    onPress={() => deleteRequest(requestId)}
                                 >
-                                    <Text style={styles.textStyle}>update</Text>
+                                    {buttonLoading ? (
+                                        <ActivityIndicator size="small" color="#ffffff" />
+                                    ) : (
+                                        <Text style={styles.modalButtonText}>Delete</Text>
+                                    )}
                                 </Pressable>
                             </View>
+
+                            {/* <ModalContent buttonLoading={buttonLoading} handleButtonPress={handleButtonPress} onClose={() => onClose()} /> */}
+
                         </View>
                     </View>
                 </Modal>
@@ -147,10 +160,17 @@ export function YourRequestScreen({ route, navigation }) {
 
         }
 
+    }
+
+    const naviagateToUpdateScreen = (id) => {
+        navigation.navigate('UpdateAmount', { requestId: requestId })
     };
 
-    const handleOpenModal = (id, action) => {
+    const handleOpenModal = (id, action, name) => {
         setClosedToId(id)
+        if (name) {
+            setClosedToName(name);
+        }
         setAction(action)
         setModalVisible(true);
     };
@@ -159,19 +179,20 @@ export function YourRequestScreen({ route, navigation }) {
         setModalVisible(false);
     };
 
-    const handleNumberChange = (value) => {
-        setNumber(value);
-    };
-
     const renderItem = ({ item }) => {
         return (
             <ScrollView style={styles.item}>
-                <View>
-                    <Text>{item.called_by.name}</Text>
-                    <Text>{"tried calling you"}</Text>
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flex: 1
+                }}>
+                    <Text style={{ fontSize: 18, color: '#3D3D3F', width: '40%' }}>{item.called_by.name}</Text>
+                    <Text style={{ fontSize: 12, width: '30%' }} >{"tried calling you"}</Text>
                     <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => handleOpenModal(item.called_by.id, "close")}>
+                        style={[styles.closeButton, { width: '20%' }]}
+                        onPress={() => handleOpenModal(item.called_by.id, "close", item.called_by.name)}>
                         <Text style={styles.buttonText}> Close </Text>
                     </TouchableOpacity>
                 </View>
@@ -181,13 +202,21 @@ export function YourRequestScreen({ route, navigation }) {
 
     const renderHistory = ({ item }) => {
         return (
-            <ScrollView style={styles.item}>
-                <View>
+            <ScrollView>
+                <View style={{
+                    backgroundColor: 'white',
+                    borderRadius: 10,
+                    margin: 16,
+                    padding: 25,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                }}>
                     <View>
-                        <Text>{"Amount"}</Text>
-                        <Text>{item.amount}</Text>
+                        <Text style={{ fontSize: 12 }}>{"Amount"}</Text>
+                        <Text style={{ fontSize: 20, color: '#3D3D3F' }}>{item.amount}</Text>
                     </View>
-                    <View>
+                    <View style={{ fontSize: 12 }}>
                         {item.type === 'B' ? (
                             <Text>{"In Bank"}</Text>
                         ) : (
@@ -195,11 +224,11 @@ export function YourRequestScreen({ route, navigation }) {
                         )}
                     </View>
                     <View>
-                        <Text>{item.updated_on}</Text>
+                        <Text style={{ fontSize: 12 }}>{item.updated_on}</Text>
                         {item.status === 'CL' ? (
-                            <Text>{"Closed"}</Text>
+                            <Text style={{ fontSize: 20, color: '#38887A' }}>{"Closed"}</Text>
                         ) : (
-                            <Text>{"Deleted"}</Text>
+                            <Text style={{ fontSize: 20, color: '#E854A4' }}>{"Deleted"}</Text>
                         )}
                     </View>
                 </View>
@@ -207,47 +236,108 @@ export function YourRequestScreen({ route, navigation }) {
         );
     };
 
-    const ActiveRoute = () => (
-        <View style={{ flex: 1, backgroundColor: '#ff4081' }}>
-            <View style={styles.cardContainer}>
-                <View style={styles.amountContainer}>
-                    <Text>{"Amount"}</Text>
-                    <Text>{amount}</Text>
+    const ActiveRoute = () => {
+        if (loading) {
+            return (
+                <View style={styles.spinnerContainer}>
+                    <ActivityIndicator size="large" color="#5C54DF" />
                 </View>
-                <Text>{"In " + requestType}</Text>
-                <View style={styles.divider} />
-                <FlatList
-                    data={callList}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                />
-            </View>
-            <View>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={showDeleteModal}>
-                    <Text style={styles.buttonText}> Delete </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={showUpdateModal}>
-                    <Text style={styles.buttonText}> Update </Text>
-                </TouchableOpacity>
-            </View>
+            );
+        }
+        else {
+            return (
+                <View style={{ flex: 1, backgroundColor: '#E9ECF4' }}>
+                    {activePresent ? (
+                        <View style={{ flex: 1 }}>
+                            <View style={styles.cardContainer}>
 
-        </View>
-    );
+                                <View style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                }}>
+                                    <View>
+                                        <Text style={{ fontSize: 10 }}>{"Amount"}</Text>
+                                        <Text style={{ fontSize: 20, color: '#3D3D3F' }}>{amount}</Text>
+                                    </View>
+                                    <Text>{"in " + requestType}</Text>
+                                </View>
 
-    const HistoryRoute = () => (
-        <View style={{ flex: 1, backgroundColor: '#ff4081' }}>
-            <FlatList
-                data={requestHistories}
-                renderItem={renderHistory}
-                keyExtractor={(item) => item.id}
-            />
-        </View>
+                                <View style={styles.divider} />
+                                {callList.length === 0 ? (
+                                    <Text>Waiting for others to call and show here. Meanwhile you can try our home section to see other requests.</Text>
+                                ) : (
+                                    <FlatList
+                                        data={callList}
+                                        renderItem={renderItem}
+                                        keyExtractor={(item) => item.id}
+                                    />
+                                )}
 
-    );
+
+
+                            </View>
+                            <View style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                // height: 0.08 * SCREENHEIGHT,
+                                flex: 0.1
+                            }}>
+                                <TouchableOpacity
+                                    style={styles.deleteButton}
+                                    onPress={showDeleteModal}>
+                                    <Text style={styles.buttonTextUpdate}> Delete </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={styles.updateButton}
+                                    onPress={naviagateToUpdateScreen}>
+                                    <Text style={styles.buttonTextUpdate}> Update </Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+                    ) : (
+                        <View style={styles.cardContainer}>
+                            <Text>Sorry, You don't have any active request. Please create one.</Text>
+                        </View>
+                    )}
+
+                </View>
+            )
+
+        }
+
+    };
+
+    const HistoryRoute = () => {
+        if (loading) {
+            return (
+                <View style={styles.spinnerContainer}>
+                    <ActivityIndicator size="large" color="#5C54DF" />
+                </View>
+            );
+        }
+        else {
+            return (
+                <View style={{ flex: 1, backgroundColor: '#E9ECF4' }}>
+                    {requestHistories.length === 0 ? (
+                        <View style={{margin: 20}}>
+                            <Text>You Don’t Have Any Previous Requests, Please Create a New Request.</Text>
+                        </View>
+
+                    ) : (
+                        <FlatList
+                            data={requestHistories}
+                            renderItem={renderHistory}
+                            keyExtractor={(item) => item.id}
+                        />
+                    )}
+                </View>
+            )
+        }
+
+
+    };
 
     const renderScene = SceneMap({
         active: ActiveRoute,
@@ -258,15 +348,13 @@ export function YourRequestScreen({ route, navigation }) {
         handleOpenModal(requestId, "delete")
         console.log("delete request")
     }
-    const showUpdateModal = () => {
-        handleOpenModal(requestId, "update")
-        console.log("update request")
-    }
+
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+
     const fetchActiveRequest = async () => {
         try {
-
-            // const token = await AsyncStorage.getItem('token')
-            const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
+            const token = await AsyncStorage.getItem('token')
+            // const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
             console.log(token)
             if (token !== null) {
                 // if (token === null) {
@@ -279,32 +367,41 @@ export function YourRequestScreen({ route, navigation }) {
                     headers: myHeaders,
                     redirect: 'follow'
                 };
-                const response = await fetch(REACT_APP_BASE_URL + `/api/requests/active`, requestOptions)
-                const resData = await response.json();
-                setCallList(resData.call_list)
-                setAmount(resData.request.amount)
-                setRequestId(resData.request.id)
-                if (resData.request.type === "C") {
-                    setRequestType("cash")
+                const response = await fetch(REACT_APP_BASE_URL + `/requests/active`, requestOptions)
+                if (response.status === 404) {
+                    setCallList([])
+                    setAmount('')
+                    setRequestId('')
+                    setActivePresent(false)
                 }
-                else if (resData.request.type === "B") {
-                    setRequestType("bank")
+                else if (response.status === 200) {
+                    const resData = await response.json();
+                    setActivePresent(true)
+                    setCallList(resData.call_list)
+                    setAmount(resData.request.amount)
+                    setRequestId(resData.request.id)
+                    if (resData.request.type === "C") {
+                        setRequestType("cash")
+                    }
+                    else if (resData.request.type === "B") {
+                        setRequestType("bank")
+                    }
                 }
-                console.log(requestType)
-                console.log("here", resData)
+                setLoading(false);
             }
         }
 
         catch (error) {
             console.error(error);
+            setLoading(false);
         }
     };
 
     const fetchRequestHistories = async () => {
         try {
 
-            // const token = await AsyncStorage.getItem('token')
-            const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
+            const token = await AsyncStorage.getItem('token')
+            // const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
             console.log(token)
             if (token !== null) {
                 // if (token === null) {
@@ -317,23 +414,25 @@ export function YourRequestScreen({ route, navigation }) {
                     headers: myHeaders,
                     redirect: 'follow'
                 };
-                const response = await fetch(REACT_APP_BASE_URL + `/api/requests/history`, requestOptions)
+                const response = await fetch(REACT_APP_BASE_URL + `/requests/history`, requestOptions)
                 const resData = await response.json();
                 setRequestHistories(resData)
+                setLoading(false);
                 console.log("here", resData)
             }
         }
 
         catch (error) {
             console.error(error);
+            setLoading(false);
         }
     };
 
     const closeRequest = async (requestId, closedToId) => {
         try {
 
-            // const token = await AsyncStorage.getItem('token')
-            const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
+            const token = await AsyncStorage.getItem('token')
+            // const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
             console.log(token)
             if (token !== null) {
                 // if (token === null) {
@@ -352,10 +451,11 @@ export function YourRequestScreen({ route, navigation }) {
                     redirect: 'follow'
                 };
                 console.log(requestId, closedToId, "here")
-                // const response = await fetch(REACT_APP_BASE_URL + `/api/requests/${requestId}/close`, requestOptions)
-                // const resData = await response.json();
-                // console.log("here", resData)
+                const response = await fetch(REACT_APP_BASE_URL + `/requests/${requestId}/close`, requestOptions)
+                const resData = await response.json();
+                console.log("here", resData)
                 handleCloseModal()
+                navigation.navigate('Add Request')
             }
         }
 
@@ -367,9 +467,9 @@ export function YourRequestScreen({ route, navigation }) {
 
     const deleteRequest = async () => {
         try {
-
-            // const token = await AsyncStorage.getItem('token')
-            const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
+            setButtonLoading(true);
+            const token = await AsyncStorage.getItem('token')
+            // const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
             console.log(token)
             if (token !== null) {
                 // if (token === null) {
@@ -382,62 +482,41 @@ export function YourRequestScreen({ route, navigation }) {
                     headers: myHeaders,
                     redirect: 'follow'
                 };
-                // const response = await fetch(REACT_APP_BASE_URL + `/api/requests/${requestId}/delete`, requestOptions)
-                // const resData = await response.json();
+                const response = await fetch(REACT_APP_BASE_URL + `/requests/${requestId}/delete`, requestOptions)
+                const resData = await response.json();
                 console.log("here", resData)
 
                 // todo: go back to home or another page
-
-                // navigation.navigate('Home')
+                setButtonLoading(false);
+                ToastAndroid.show("Request Deleted Successfully", ToastAndroid.SHORT)
                 handleCloseModal()
+                navigation.navigate('Add Request')
             }
         }
 
 
         catch (error) {
             console.error(error);
+            setButtonLoading(false);
         }
     };
 
-    const updateRequest = async () => {
-        try {
-
-            // const token = await AsyncStorage.getItem('token')
-            const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
-            console.log(token)
-            if (token !== null) {
-                // if (token === null) {
-                var myHeaders = new Headers();
-                myHeaders.append("authorization", `token ${token}`);
-                myHeaders.append("Content-Type", "application/json");
-
-                var raw = JSON.stringify({
-                    "amount": number,
-                });
-                var requestOptions = {
-                    method: 'PATCH',
-                    headers: myHeaders,
-                    body: raw,
-                    redirect: 'follow'
-                };
-                const response = await fetch(REACT_APP_BASE_URL + `/api/requests/${requestId}`, requestOptions)
-                const resData = await response.json();
-                console.log("here2", resData)
-
-                fetchActiveRequest()
-                handleCloseModal()
-            }
-        }
-
-
-        catch (error) {
-            console.error(error);
-        }
-    };
+    const renderTabBar = props => (
+        <TabBar
+            {...props}
+            indicatorStyle={styles.tabIndicator}
+            indicatorContainerStyle={{ flex: 1 }}
+            style={styles.tabBar}
+            activeColor='#4A43BD'
+            inactiveColor='#908E8E'
+            labelStyle={{ fontWeight: 'bold', fontSize: 16 }}
+        />
+    );
 
     return (
         <View style={styles.container}>
             <TabView
+                renderTabBar={renderTabBar}
                 navigationState={{ index, routes }}
                 renderScene={renderScene}
                 onIndexChange={setIndex}
@@ -452,31 +531,36 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    containerAvoid: {
+    spinnerContainer: {
         flex: 1,
-        alignItems: 'center',
-        padding: 10
-    },
-    heading: {
-        marginBottom: 10,
-        marginTop: 40,
-        fontSize: 20
-    },
-    containerInput: {
-        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
     },
-    para: {
-        marginBottom: 10,
-        marginTop: 10,
-        fontSize: 10
+    closeButton: {
+        backgroundColor: '#5C54DF',
+        width: 0.2 * SCREENWIDTH,
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
+        borderRadius: 15,
     },
-    input: {
-        height: 40,
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
-        width: 0.9 * SCREENWIDTH,
+    deleteButton: {
+        backgroundColor: '#E854A4',
+        width: '50%',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    updateButton: {
+        backgroundColor: '#5C54DF',
+        width: '50%',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    buttonTextUpdate: {
+        fontFamily: 'Poppins',
+        fontSize: 18,
+        color: 'white',
+        alignSelf: 'center',
     },
     button: {
         backgroundColor: '#5C54DF',
@@ -502,28 +586,14 @@ const styles = StyleSheet.create({
     underlineStyleHighLighted: {
         borderColor: "#060505",
     },
-    OtpTimeResendContainer: {
-        flexDirection: 'row',
-        width: '80%',
-        justifyContent: 'center',
-    },
-    ExpireText: {
-        flex: 2
-    },
-    OtpTimer: {
-        flex: 1,
-        width: '33%',
-    },
     item: {
-        padding: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
+        marginBottom: 25
     },
     centeredView: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 22
+        marginTop: 22,
     },
     modalView: {
         margin: 20,
@@ -538,7 +608,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 4,
-        elevation: 5
+        elevation: 5,
     },
     button: {
         borderRadius: 20,
@@ -557,12 +627,69 @@ const styles = StyleSheet.create({
         textAlign: "center"
     },
     modalText: {
-        marginBottom: 15,
-        textAlign: "center"
+        marginBottom: 30,
+        textAlign: "center",
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#232325'
     },
     modalButtonContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-    }
+        width: 0.6 * SCREENWIDTH
+    },
+    tabView: {
+        backgroundColor: '#E9ECF4'
+    },
+    tabIndicator: {
+        backgroundColor: '#4A43BD',
+        height: 0.005 * SCREENHEIGHT,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    tabBar: {
+        backgroundColor: '#E9ECF4'
+    },
+    cardContainer: {
+        margin: 16,
+        padding: 25,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+        backgroundColor: 'white',
+        borderRadius: 10,
+        elevation: 10,
+        shadowColor: '#8374a6',
+        flex: 0.9
+    },
+    divider: {
+        borderBottomColor: '#D9D9D9',
+        borderBottomWidth: 1,
+        marginVertical: 30
+    },
+    modalButton: {
+        width: 0.25 * SCREENWIDTH,
+        height: 0.05 * SCREENHEIGHT,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    modalButtonText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: 'white'
+    },
+    buttonCancel: {
+        backgroundColor: '#5C54DF'
+    },
+    buttonDelete: {
+        backgroundColor: '#E854A4'
+    },
+    modalButtonClose: {
+        backgroundColor: '#4ABAA6'
+    },
+    error: {
+        color: 'red',
+        marginBottom: 10,
+    },
 
 })

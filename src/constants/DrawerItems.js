@@ -1,47 +1,37 @@
 export default [
     {
-        name:'Home',
-        iconType:'Material',
-        iconName:'home'
+        name: 'Home',
+        iconType: 'Material',
+        iconName: 'home'
     },
     {
-        name:'Add Request',
-        iconType:'Material',
-        iconName:'money'
+        name: 'Add Request',
+        iconType: 'Material',
+        iconName: 'plus-circle'
     },
     {
-        name:'Your Requests',
-        iconType:'Material',
-        iconName:'money'
+        name: 'Your Request',
+        iconType: 'Material',
+        iconName: 'money'
     },
     {
-        name:'About Us',
-        iconType:'Feather',
-        iconName:'users'
+        name: 'About Us',
+        iconType: 'Feather',
+        iconName: 'info-circle'
     },
     {
-        name:'Privacy Policy',
-        iconType:'Material',
-        iconName:'unlock'
+        name: 'Privacy Policy',
+        iconType: 'Feather',
+        iconName: 'user-secret'
     },
     {
-        name:'Contact Us',
-        iconType:'Material',
-        iconName:'phone'
+        name: 'Logout',
+        iconType: 'Material',
+        iconName: 'sign-out'
     },
     {
-        name:'Terms & Conditions',
-        iconType:'Material',
-        iconName:'newspaper-o'
+        name: 'Refer a Friend',
+        iconType: 'FontAwesome5',
+        iconName: 'users'
     },
-    {
-        name:'Logout',
-        iconType:'Material',
-        iconName:'newspaper-o'
-    },
-    {
-        name:'Refer a Friend',
-        iconType:'FontAwesome5',
-        iconName:'newspaper-o'
-    }
- ]
+]

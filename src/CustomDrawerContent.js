@@ -25,8 +25,8 @@ const CustomDrawerContent = ({ name, phoneNumber, ...props }) => {
 
 const styles = StyleSheet.create({
     divider: {
-        borderBottomColor: 'black',
-        borderBottomWidth: 1,
+        borderBottomColor: '#D9D9D9',
+        borderBottomWidth: 2,
         marginVertical: 10,
     },
     label: {
@@ -36,25 +36,26 @@ const styles = StyleSheet.create({
     avatarContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 10,
-        paddingHorizontal: 16,
+        marginVertical: 20,
+        marginLeft: 20,
+        paddingHorizontal: 0,
     },
     nameContainer: {
         marginBottom: 10,
-        paddingHorizontal: 16,
+        marginLeft: 20,
+        paddingHorizontal: 0,
     },
     avatar: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        backgroundColor: 'gray',
+        width: 60,
+        height: 60,
+        borderRadius: 50,
+        backgroundColor: '#3730A4',
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 10,
     },
     avatarText: {
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 26,
         color: 'white',
     },
     name: {

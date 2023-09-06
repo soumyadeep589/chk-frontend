@@ -1,3 +1,9 @@
+# Built application files
+*.apk
+*.aar
+*.ap_
+*.aab
+
 # OSX
 #
 .DS_Store
@@ -25,6 +31,7 @@ DerivedData
 # Android/IntelliJ
 #
 build/
+release/
 .idea
 .gradle
 local.properties

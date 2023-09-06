@@ -7,8 +7,10 @@ import {
 
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { TabView, SceneMap } from 'react-native-tab-view';
+import { useIsFocused } from '@react-navigation/native';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { REACT_APP_BASE_URL } from "chk";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const SCREENWIDTH = Dimensions.get('window').width;
@@ -17,6 +19,7 @@ const SCREENHEIGHT = Dimensions.get('window').height;
 export function HomeScreen({ route, navigation }) {
 
 	const layout = useWindowDimensions();
+	const isFocused = useIsFocused();
 
 	const [index, setIndex] = React.useState(0);
 	const [routes] = React.useState([
@@ -30,10 +33,12 @@ export function HomeScreen({ route, navigation }) {
 	const [requestId, setRequestId] = useState('');
 
 	useEffect(() => {
-		fetchRequest();
-		fetchCashRequest();
-		fetchBankRequest();
-	}, []);
+		if (isFocused) {
+			fetchRequest();
+			fetchCashRequest();
+			fetchBankRequest();
+		}
+	}, [isFocused]);
 
 	const CallModal = ({ phoneNumber, visible, onClose }) => {
 		return (
@@ -48,16 +53,16 @@ export function HomeScreen({ route, navigation }) {
 						<Text style={styles.modalText}>Please call to meet and exchange money</Text>
 						<View style={styles.modalButtonContainer}>
 							<Pressable
-								style={[styles.button, styles.buttonClose]}
+								style={[styles.modalButton, styles.buttonCancel]}
 								onPress={() => onClose()}
 							>
-								<Text style={styles.textStyle}>Cancel</Text>
+								<Text style={styles.modalButtonText}>Cancel</Text>
 							</Pressable>
 							<Pressable
-								style={[styles.button, styles.buttonClose]}
+								style={[styles.modalButton, styles.buttonCall]}
 								onPress={() => handleCall(phoneNumber)}
 							>
-								<Text style={styles.textStyle}>Call</Text>
+								<Text style={styles.modalButtonText}>Call</Text>
 							</Pressable>
 						</View>
 
@@ -82,28 +87,38 @@ export function HomeScreen({ route, navigation }) {
 	const renderItem = ({ item }) => {
 		return (
 			<ScrollView style={styles.item}>
-				<View>
-					<Text>{item.opened_by.name}</Text>
-					<Text>{item.opened_by.transactions + "Transacted"}</Text>
+				<View style={{
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					flex: 1,
+				}}>
+					<Text style={{ fontSize: 16, color: '#424242' }}>{item.opened_by.name}</Text>
+					<Text>{item.opened_by.transactions + " Transacted"}</Text>
 				</View>
-				<View>
+				<View style={{
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					flex: 1,
+					marginTop: 30
+				}}>
 					<View>
-						<Text>{"Amount"}</Text>
-						<Text>{item.amount}</Text>
+						<Text style={{ fontSize: 10 }}>{"Amount"}</Text>
+						<Text style={{ fontSize: 20, color: '#3D3D3F' }}>{item.amount}</Text>
 					</View>
 					<TouchableOpacity
-						style={styles.button}
+						style={styles.acceptButton}
 						onPress={() => handleOpenModal(item.opened_by.phone, item.id)}>
 						<Text style={styles.buttonText}> Accept </Text>
 					</TouchableOpacity>
 				</View>
-
 			</ScrollView>
 		);
 	};
 
 	const CashRoute = () => (
-		<View style={{ flex: 1, backgroundColor: '#ff4081' }}>
+		<View style={{ flex: 1, backgroundColor: '#E9ECF4' }}>
 			<FlatList
 				data={cashRequests}
 				renderItem={renderItem}
@@ -113,7 +128,7 @@ export function HomeScreen({ route, navigation }) {
 	);
 
 	const BankRoute = () => (
-		<View style={{ flex: 1, backgroundColor: '#ff4081' }}>
+		<View style={{ flex: 1, backgroundColor: '#E9ECF4' }}>
 			<FlatList
 				data={bankRequests}
 				renderItem={renderItem}
@@ -131,8 +146,8 @@ export function HomeScreen({ route, navigation }) {
 	const createCall = async () => {
 		try {
 
-			// const token = await AsyncStorage.getItem('token')
-			const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
+			const token = await AsyncStorage.getItem('token')
+			// const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
 			console.log(token)
 			if (token !== null) {
 				// if (token === null) {
@@ -140,15 +155,15 @@ export function HomeScreen({ route, navigation }) {
 				myHeaders.append("authorization", `token ${token}`);
 				myHeaders.append("Content-Type", "application/json");
 				var raw = JSON.stringify({
-                    "request": requestId,
-                });
+					"request": requestId,
+				});
 				var requestOptions = {
 					method: 'POST',
 					headers: myHeaders,
 					body: raw,
 					redirect: 'follow'
 				};
-				const response = await fetch(REACT_APP_BASE_URL + `/api/calls`, requestOptions)
+				const response = await fetch(REACT_APP_BASE_URL + `/calls`, requestOptions)
 				const resData = await response.json();
 				console.log("here", resData)
 			}
@@ -162,8 +177,8 @@ export function HomeScreen({ route, navigation }) {
 	const fetchRequest = async () => {
 		try {
 
-			// const token = await AsyncStorage.getItem('token')
-			const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
+			const token = await AsyncStorage.getItem('token')
+			// const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
 			console.log(token)
 			if (token !== null) {
 				// if (token === null) {
@@ -184,7 +199,7 @@ export function HomeScreen({ route, navigation }) {
 				else {
 					requestType = "B"
 				}
-				const response = await fetch(REACT_APP_BASE_URL + `/api/requests?type=${requestType}`, requestOptions)
+				const response = await fetch(REACT_APP_BASE_URL + `/requests?type=${requestType}`, requestOptions)
 				const resData = await response.json();
 				if (route.params !== undefined && route.params.requestType === "B") {
 					setbankRequests(resData)
@@ -204,8 +219,8 @@ export function HomeScreen({ route, navigation }) {
 	const fetchCashRequest = async () => {
 		try {
 
-			// const token = await AsyncStorage.getItem('token')
-			const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
+			const token = await AsyncStorage.getItem('token')
+			// const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
 			console.log(token)
 			if (token !== null) {
 				// if (token === null) {
@@ -218,7 +233,7 @@ export function HomeScreen({ route, navigation }) {
 					headers: myHeaders,
 					redirect: 'follow'
 				};
-				const response = await fetch(REACT_APP_BASE_URL + `/api/requests?type=B`, requestOptions)
+				const response = await fetch(REACT_APP_BASE_URL + `/requests?type=B`, requestOptions)
 				const resData = await response.json();
 				setcashRequests(resData);
 				console.log("here", resData)
@@ -234,8 +249,8 @@ export function HomeScreen({ route, navigation }) {
 	const fetchBankRequest = async () => {
 		try {
 
-			// const token = await AsyncStorage.getItem('token')
-			const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
+			const token = await AsyncStorage.getItem('token')
+			// const token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
 			console.log(token)
 			if (token !== null) {
 				// if (token === null) {
@@ -248,7 +263,7 @@ export function HomeScreen({ route, navigation }) {
 					headers: myHeaders,
 					redirect: 'follow'
 				};
-				const response = await fetch(REACT_APP_BASE_URL + `/api/requests?type=C`, requestOptions)
+				const response = await fetch(REACT_APP_BASE_URL + `/requests?type=C`, requestOptions)
 				const resData = await response.json();
 				setbankRequests(resData);
 				console.log("here", resData)
@@ -271,16 +286,31 @@ export function HomeScreen({ route, navigation }) {
 		navigation.navigate("Add Request")
 	}
 
+	const renderTabBar = props => (
+		<TabBar
+			{...props}
+			indicatorStyle={styles.tabIndicator}
+			indicatorContainerStyle={{ flex: 1 }}
+			style={styles.tabBar}
+			activeColor='#4A43BD'
+			inactiveColor='#908E8E'
+			labelStyle={{ fontWeight: 'bold', fontSize: 16 }}
+		/>
+	);
+
+
 	return (
 		<View style={styles.container}>
 			<TabView
+				renderTabBar={renderTabBar}
 				navigationState={{ index, routes }}
 				renderScene={renderScene}
 				onIndexChange={setIndex}
 				initialLayout={{ width: layout.width }}
+				style={styles.tabView}
 			/>
 			<TouchableOpacity
-				style={styles.button}
+				style={styles.requestButton}
 				onPress={goToRequestPage}>
 				<Text style={styles.buttonText}> Request </Text>
 			</TouchableOpacity>
@@ -303,62 +333,29 @@ const styles = StyleSheet.create({
 		marginTop: 40,
 		fontSize: 20
 	},
-	containerInput: {
-		flex: 1,
-		alignItems: 'center',
-	},
-	para: {
-		marginBottom: 10,
-		marginTop: 10,
-		fontSize: 10
-	},
-	input: {
-		height: 40,
-		margin: 12,
-		borderWidth: 1,
-		padding: 10,
-		width: 0.9 * SCREENWIDTH,
-	},
-	button: {
+	acceptButton: {
 		backgroundColor: '#5C54DF',
-		width: 0.2 * SCREENWIDTH,
+		width: 0.3 * SCREENWIDTH,
+		height: 0.05 * SCREENHEIGHT,
 		alignItems: 'center',
 		justifyContent: 'center',
-		alignSelf: 'center',
-		borderRadius: 15,
+		borderRadius: 10,
 	},
 	buttonText: {
 		fontFamily: 'Poppins',
-		fontSize: 14,
+		fontSize: 18,
 		color: 'white',
 		alignSelf: 'center',
 	},
-	underlineStyleBase: {
-		width: 30,
-		height: 45,
-		borderWidth: 0,
-		borderBottomWidth: 1,
-	},
-
-	underlineStyleHighLighted: {
-		borderColor: "#060505",
-	},
-	OtpTimeResendContainer: {
-		flexDirection: 'row',
-		width: '80%',
-		justifyContent: 'center',
-	},
-	ExpireText: {
-		flex: 2
-	},
-	OtpTimer: {
-		flex: 1,
-		width: '33%',
-	},
 	item: {
-		padding: 16,
+		margin: 16,
+		padding: 25,
 		borderBottomWidth: 1,
 		borderBottomColor: '#ccc',
+		backgroundColor: 'white',
+		borderRadius: 10,
+		elevation: 10,
+		shadowColor: '#8374a6',
 	},
 	centeredView: {
 		flex: 1,
@@ -381,29 +378,57 @@ const styles = StyleSheet.create({
 		shadowRadius: 4,
 		elevation: 5
 	},
-	button: {
-		borderRadius: 20,
-		padding: 10,
-		elevation: 2
+	requestButton: {
+		backgroundColor: '#5C54DF',
+		width: SCREENWIDTH,
+		height: 0.07 * SCREENHEIGHT,
+		alignItems: 'center',
+		justifyContent: 'center',
 	},
 	buttonOpen: {
 		backgroundColor: "#F194FF",
 	},
-	buttonClose: {
-		backgroundColor: "#2196F3",
+	buttonCancel: {
+		backgroundColor: '#5C54DF'
 	},
-	textStyle: {
-		color: "white",
-		fontWeight: "bold",
-		textAlign: "center"
+	buttonCall: {
+		backgroundColor: '#4ABAA6'
+	},
+	modalButton: {
+		width: 0.25 * SCREENWIDTH,
+		height: 0.05 * SCREENHEIGHT,
+		borderRadius: 10,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	modalButtonText: {
+		fontSize: 16,
+		fontWeight: 'bold',
+		color: 'white'
 	},
 	modalText: {
-		marginBottom: 15,
-		textAlign: "center"
+		marginBottom: 30,
+		textAlign: "center",
+		fontSize: 18,
+		fontWeight: 'bold',
+		color: '#232325'
 	},
 	modalButtonContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+		width: 0.6 * SCREENWIDTH
+	},
+	tabView: {
+		backgroundColor: '#E9ECF4'
+	},
+	tabIndicator: {
+		backgroundColor: '#4A43BD',
+		height: 0.005 * SCREENHEIGHT,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	tabBar: {
+		backgroundColor: '#E9ECF4'
 	}
 
 })

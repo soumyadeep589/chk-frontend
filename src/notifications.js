@@ -48,7 +48,7 @@ const notificationListener = () => {
 
     // Foreground State
     messaging().onMessage(async remoteMessage => {
-        Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+        Alert.alert(remoteMessage.notification.title, remoteMessage.notification.body);
         console.log('foreground', remoteMessage);
     });
 };

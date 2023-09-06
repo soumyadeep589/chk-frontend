@@ -8,7 +8,11 @@ import {
     TextInput,
     TouchableOpacity,
     KeyboardAvoidingView,
-    Picker
+    Picker,
+    ToastAndroid,
+    Modal,
+    TouchableWithoutFeedback,
+    ActivityIndicator
 
 } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -24,17 +28,72 @@ const data = [
     { label: 'Bank', value: 'B' },
 ];
 export function RequestScreen({ navigation }) {
-    const [amount, setAmount] = useState(null)
-    const [value, setValue] = useState(null);
+    const [amount, setAmount] = useState('')
+    const [value, setValue] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
     const [isFocus, setIsFocus] = useState(false);
+    const [buttonLoading, setButtonLoading] = useState(false);
 
-    const fetchRequest = async () => {
+
+    const CallModal = ({ visible, onClose }) => {
+
+        return (
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={visible}
+                onRequestClose={() => onClose()}
+            >
+                <TouchableWithoutFeedback onPress={handleCloseModal}>
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <Text style={styles.modalText}>
+                                Hi, you have an open request, please close that before requesting new.
+                            </Text>
+                            <TouchableOpacity onPress={gotoRequestPage}>
+                                <Text style={{ color: '#261EA6', fontSize: 16 }}>
+                                    Go to Your Requests page
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>
+
+            </Modal>
+        );
+
+    }
+
+
+    const submitRequest = () => {
+        if (amount === '') {
+            ToastAndroid.show("Please Provide Amount", ToastAndroid.SHORT)
+        }
+        else if (value === '') {
+            ToastAndroid.show("Please Select a Type", ToastAndroid.SHORT)
+        }
+        else {
+            createRequest();
+        }
+    }
+
+    const gotoRequestPage = () => {
+        setAmount('');
+        setValue('');
+        navigation.navigate('Your Requests');
+    }
+
+    const delay = ms => new Promise(res => setTimeout(res, ms));
+
+
+    const createRequest = async () => {
         try {
+            setButtonLoading(true);
 
             const token = await AsyncStorage.getItem('token')
             console.log(token)
-            // if (token !== null) {
-            if (token === null) {
+            if (token !== null) {
+                // if (token === null) {
                 var myHeaders = new Headers();
                 myHeaders.append("authorization", `token ${token}`);
                 myHeaders.append("Content-Type", "application/json");
@@ -50,22 +109,36 @@ export function RequestScreen({ navigation }) {
                     body: raw,
                     redirect: 'follow'
                 };
-                const response = await fetch(REACT_APP_BASE_URL + `/api/requests`, requestOptions)
+                const response = await fetch(REACT_APP_BASE_URL + `/requests`, requestOptions)
                 const json = await response.json();
-                navigation.navigate("Home", {requestType: value})
+                if (json["non_field_errors"] !== undefined && json["non_field_errors"][0] === 'already opened request') {
+                    handleOpenModal()
+                }
+                setButtonLoading(false);
+                navigation.navigate("Your Requests")
                 console.log(json)
             }
 
 
         } catch (error) {
             console.error(error);
+            setButtonLoading(false);
         }
     };
+
+    const handleOpenModal = () => {
+        setModalVisible(true);
+    };
+
+    const handleCloseModal = () => {
+        setModalVisible(false);
+    };
+
     return (
         <View style={StyleSheet.container}>
             <KeyboardAvoidingView
-                keyboardVerticalOffset={50}
-                behavior={'padding'}
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
                 style={styles.containerAvoid}
             >
                 <View style={styles.containerHeading}>
@@ -95,7 +168,7 @@ export function RequestScreen({ navigation }) {
                             data={data}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus ? 'Select item' : '...'}
+                            placeholder={!isFocus ? 'Select' : '...'}
 
                             value={value}
                             onFocus={() => setIsFocus(true)}
@@ -111,12 +184,17 @@ export function RequestScreen({ navigation }) {
                 </View>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={fetchRequest}>
-                    <Text style={styles.buttonText}> Request </Text>
+                    onPress={submitRequest}>
+                    {buttonLoading ? (
+                        <ActivityIndicator size="small" color="#ffffff" />
+                    ) : (
+                        <Text style={styles.buttonText}> Request </Text>
+                    )}
+
                 </TouchableOpacity>
 
             </KeyboardAvoidingView>
-
+            <CallModal visible={modalVisible} onClose={handleCloseModal} />
         </View>
     );
 }
@@ -124,6 +202,8 @@ export function RequestScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#E9ECF4',
+        fontFamily: 'Poppins'
     },
     containerAvoid: {
         alignItems: 'center',
@@ -133,18 +213,19 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     heading: {
-        marginBottom: 10,
         marginTop: 40,
-        fontSize: 20
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#000000',
     },
     containerInput: {
         flex: 1,
         alignItems: 'center',
     },
     para: {
-        marginBottom: 10,
+        marginBottom: 20,
         marginTop: 10,
-        fontSize: 10
+        fontSize: 13
     },
     input: {
         height: 40,
@@ -182,10 +263,9 @@ const styles = StyleSheet.create({
     },
     dropdown: {
         width: 100,
-        borderColor: 'gray',
-        borderWidth: 0.5,
-        borderRadius: 8,
-        paddingHorizontal: 8,
+        borderWidth: 0,
+        borderRadius: 50,
+        paddingHorizontal: 16,
         backgroundColor: 'white'
     },
     icon: {
@@ -205,5 +285,37 @@ const styles = StyleSheet.create({
     },
     selectedTextStyle: {
         fontSize: 16,
+    },
+    image: {
+        width: 203,
+        height: 195,
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    modalText: {
+        marginBottom: 20,
+        textAlign: "center",
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#E854A4'
     },
 })
