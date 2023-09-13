@@ -1,6 +1,10 @@
 
 import 'react-native-gesture-handler';
 import React, { useState, useEffect } from 'react';
+import {
+  PermissionsAndroid,
+  Platform,
+} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigator from './src/AppNavigator';
 import { getFcmToken, notificationListener, requestUserPermission } from './src/notifications';
@@ -124,6 +128,17 @@ export default function App({ navigation }) {
       dispatch({ type: 'RESTORE_TOKEN', token: authToken });
     }
 
+    const checkNotificationPermission = async () => {
+      if (Platform.OS === 'android') {
+        try {
+          await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+          );
+        } catch (error) {
+        }
+      }
+    };
+
     // let token = await AsyncStorage.getItem('token')
     // let token = "a8c4fb963aa9f975a3ca86a371e17148494ca738"
     // let token = null
@@ -132,6 +147,7 @@ export default function App({ navigation }) {
     void fetchFcmToken();
     void notificationListener();
     void requestUserPermission();
+    checkNotificationPermission();
     checkLocationPermission();
     setTimeout(() => {
       setIsLoading(false);
