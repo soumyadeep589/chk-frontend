@@ -31,6 +31,7 @@
     "react-native-phone-number-input": "^2.1.0",
     "react-native-push-notification": "^8.1.1",
     "react-native-reanimated": "^3.3.0",
+    "react-native-rename": "^3.2.13",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.9.0",
     "react-native-tab-view": "^3.5.1",
