@@ -58,7 +58,7 @@ export function UpdateAmountScreen({ route, navigation }) {
                 const response = await fetch(REACT_APP_BASE_URL + `/requests/${route.params.requestId}`, requestOptions)
                 const resData = await response.json();
                 console.log("here2", resData)
-                navigation.navigate('Your Requests');
+                navigation.navigate('Your Request');
             }
         }
         catch (error) {

@@ -80,7 +80,7 @@ export function RequestScreen({ navigation }) {
     const gotoRequestPage = () => {
         setAmount('');
         setValue('');
-        navigation.navigate('Your Requests');
+        navigation.navigate('Your Request');
     }
 
     const delay = ms => new Promise(res => setTimeout(res, ms));
@@ -115,7 +115,6 @@ export function RequestScreen({ navigation }) {
                     handleOpenModal()
                 }
                 setButtonLoading(false);
-                navigation.navigate("Your Requests")
                 console.log(json)
             }
 

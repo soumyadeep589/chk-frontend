@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* chkrnTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* chkrnTests.m */; };
+		00E356F31AD99517003FC87E /* CasHaiKyaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* CasHaiKyaTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		276200D402A3E4AC18E230CB /* libPods-chkrn-chkrnTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27D31FA42ACC1F7D2F575698 /* libPods-chkrn-chkrnTests.a */; };
-		5A461D9803B2CAE4FC3226F8 /* libPods-chkrn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 407CA6E3973C7BEC53CBC6B1 /* libPods-chkrn.a */; };
+		276200D402A3E4AC18E230CB /* libPods-CasHaiKya-CasHaiKyaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 27D31FA42ACC1F7D2F575698 /* libPods-CasHaiKya-CasHaiKyaTests.a */; };
+		5A461D9803B2CAE4FC3226F8 /* libPods-CasHaiKya.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 407CA6E3973C7BEC53CBC6B1 /* libPods-CasHaiKya.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -22,27 +22,27 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = chkrn;
+			remoteInfo = "CasHaiKya";
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* chkrnTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = chkrnTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* CasHaiKyaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CasHaiKyaTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* chkrnTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = chkrnTests.m; sourceTree = "<group>"; };
-		038D2CB97BD04A4F25648CDC /* Pods-chkrn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chkrn.debug.xcconfig"; path = "Target Support Files/Pods-chkrn/Pods-chkrn.debug.xcconfig"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* chkrn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = chkrn.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = chkrn/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = chkrn/AppDelegate.m; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = chkrn/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = chkrn/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = chkrn/main.m; sourceTree = "<group>"; };
-		27D31FA42ACC1F7D2F575698 /* libPods-chkrn-chkrnTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-chkrn-chkrnTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2B252D3F3FF6D2DF148DD2B2 /* Pods-chkrn.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chkrn.release.xcconfig"; path = "Target Support Files/Pods-chkrn/Pods-chkrn.release.xcconfig"; sourceTree = "<group>"; };
-		407CA6E3973C7BEC53CBC6B1 /* libPods-chkrn.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-chkrn.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7193318282B712EA7E27B90E /* Pods-chkrn-chkrnTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chkrn-chkrnTests.release.xcconfig"; path = "Target Support Files/Pods-chkrn-chkrnTests/Pods-chkrn-chkrnTests.release.xcconfig"; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = chkrn/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		911451F543EAED493D213D69 /* Pods-chkrn-chkrnTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-chkrn-chkrnTests.debug.xcconfig"; path = "Target Support Files/Pods-chkrn-chkrnTests/Pods-chkrn-chkrnTests.debug.xcconfig"; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* CasHaiKyaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "CasHaiKyaTests.m"; sourceTree = "<group>"; };
+		038D2CB97BD04A4F25648CDC /* Pods-CasHaiKya.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasHaiKya.debug.xcconfig"; path = "Target Support Files/Pods-CasHaiKya/Pods-CasHaiKya.debug.xcconfig"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* CasHaiKya.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CasHaiKya.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = "CasHaiKya/AppDelegate.h"; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = CasHaiKya/AppDelegate.m; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "CasHaiKya/Images.xcassets"; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "CasHaiKya/Info.plist"; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = "CasHaiKya/main.m"; sourceTree = "<group>"; };
+		27D31FA42ACC1F7D2F575698 /* libPods-CasHaiKya-CasHaiKyaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CasHaiKya-CasHaiKyaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B252D3F3FF6D2DF148DD2B2 /* Pods-CasHaiKya.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasHaiKya.release.xcconfig"; path = "Target Support Files/Pods-CasHaiKya/Pods-CasHaiKya.release.xcconfig"; sourceTree = "<group>"; };
+		407CA6E3973C7BEC53CBC6B1 /* libPods-CasHaiKya.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-CasHaiKya.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7193318282B712EA7E27B90E /* Pods-CasHaiKya-CasHaiKyaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasHaiKya-CasHaiKyaTests.release.xcconfig"; path = "Target Support Files/Pods-CasHaiKya-CasHaiKyaTests/Pods-CasHaiKya-CasHaiKyaTests.release.xcconfig"; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "CasHaiKya/LaunchScreen.storyboard"; sourceTree = "<group>"; };
+		911451F543EAED493D213D69 /* Pods-CasHaiKya-CasHaiKyaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CasHaiKya-CasHaiKyaTests.debug.xcconfig"; path = "Target Support Files/Pods-CasHaiKya-CasHaiKyaTests/Pods-CasHaiKya-CasHaiKyaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -51,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				276200D402A3E4AC18E230CB /* libPods-chkrn-chkrnTests.a in Frameworks */,
+				276200D402A3E4AC18E230CB /* libPods-CasHaiKya-CasHaiKyaTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,20 +59,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A461D9803B2CAE4FC3226F8 /* libPods-chkrn.a in Frameworks */,
+				5A461D9803B2CAE4FC3226F8 /* libPods-CasHaiKya.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* chkrnTests */ = {
+		00E356EF1AD99517003FC87E /* CasHaiKyaTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* chkrnTests.m */,
+				00E356F21AD99517003FC87E /* CasHaiKyaTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = chkrnTests;
+			path = "CasHaiKyaTests";
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -83,7 +83,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* chkrn */ = {
+		13B07FAE1A68108700A75B9A /* CasHaiKya */ = {
 			isa = PBXGroup;
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -93,15 +93,15 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = chkrn;
+			name = "CasHaiKya";
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				407CA6E3973C7BEC53CBC6B1 /* libPods-chkrn.a */,
-				27D31FA42ACC1F7D2F575698 /* libPods-chkrn-chkrnTests.a */,
+				407CA6E3973C7BEC53CBC6B1 /* libPods-CasHaiKya.a */,
+				27D31FA42ACC1F7D2F575698 /* libPods-CasHaiKya-CasHaiKyaTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -116,9 +116,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* chkrn */,
+				13B07FAE1A68108700A75B9A /* CasHaiKya */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* chkrnTests */,
+				00E356EF1AD99517003FC87E /* CasHaiKyaTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				CA78F13FABED095347E0E4ED /* Pods */,
@@ -131,8 +131,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* chkrn.app */,
-				00E356EE1AD99517003FC87E /* chkrnTests.xctest */,
+				13B07F961A680F5B00A75B9A /* CasHaiKya.app */,
+				00E356EE1AD99517003FC87E /* CasHaiKyaTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -140,10 +140,10 @@
 		CA78F13FABED095347E0E4ED /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				038D2CB97BD04A4F25648CDC /* Pods-chkrn.debug.xcconfig */,
-				2B252D3F3FF6D2DF148DD2B2 /* Pods-chkrn.release.xcconfig */,
-				911451F543EAED493D213D69 /* Pods-chkrn-chkrnTests.debug.xcconfig */,
-				7193318282B712EA7E27B90E /* Pods-chkrn-chkrnTests.release.xcconfig */,
+				038D2CB97BD04A4F25648CDC /* Pods-CasHaiKya.debug.xcconfig */,
+				2B252D3F3FF6D2DF148DD2B2 /* Pods-CasHaiKya.release.xcconfig */,
+				911451F543EAED493D213D69 /* Pods-CasHaiKya-CasHaiKyaTests.debug.xcconfig */,
+				7193318282B712EA7E27B90E /* Pods-CasHaiKya-CasHaiKyaTests.release.xcconfig */,
 			);
 			name = Pods;
 			path = Pods;
@@ -152,9 +152,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* chkrnTests */ = {
+		00E356ED1AD99517003FC87E /* CasHaiKyaTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "chkrnTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "CasHaiKyaTests" */;
 			buildPhases = (
 				741909D0373C674030878E81 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -168,14 +168,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = chkrnTests;
-			productName = chkrnTests;
-			productReference = 00E356EE1AD99517003FC87E /* chkrnTests.xctest */;
+			name = "CasHaiKyaTests";
+			productname = "CasHaiKyaTests";
+			productReference = 00E356EE1AD99517003FC87E /* CasHaiKyaTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* chkrn */ = {
+		13B07F861A680F5B00A75B9A /* CasHaiKya */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "chkrn" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "CasHaiKya" */;
 			buildPhases = (
 				A54531C76FB529EEA9B8DD5C /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -190,9 +190,9 @@
 			);
 			dependencies = (
 			);
-			name = chkrn;
-			productName = chkrn;
-			productReference = 13B07F961A680F5B00A75B9A /* chkrn.app */;
+			name = "CasHaiKya";
+			productName = "CasHaiKya";
+			productReference = 13B07F961A680F5B00A75B9A /* CasHaiKya.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -212,7 +212,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "chkrn" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "CasHaiKya" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -225,8 +225,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* chkrn */,
-				00E356ED1AD99517003FC87E /* chkrnTests */,
+				13B07F861A680F5B00A75B9A /* CasHaiKya */,
+				00E356ED1AD99517003FC87E /* CasHaiKyaTests */,
 			);
 		};
 /* End PBXProject section */
@@ -271,15 +271,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-chkrn-chkrnTests/Pods-chkrn-chkrnTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-CasHaiKya-CasHaiKyaTests/Pods-CasHaiKya-CasHaiKyaTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-chkrn-chkrnTests/Pods-chkrn-chkrnTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-CasHaiKya-CasHaiKyaTests/Pods-CasHaiKya-CasHaiKyaTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-chkrn-chkrnTests/Pods-chkrn-chkrnTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CasHaiKya-CasHaiKyaTests/Pods-CasHaiKya-CasHaiKyaTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		736CB2B9B116E7825DD74E29 /* [CP] Copy Pods Resources */ = {
@@ -288,15 +288,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-chkrn-chkrnTests/Pods-chkrn-chkrnTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-CasHaiKya-CasHaiKyaTests/Pods-CasHaiKya-CasHaiKyaTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-chkrn-chkrnTests/Pods-chkrn-chkrnTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-CasHaiKya-CasHaiKyaTests/Pods-CasHaiKya-CasHaiKyaTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-chkrn-chkrnTests/Pods-chkrn-chkrnTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CasHaiKya-CasHaiKyaTests/Pods-CasHaiKya-CasHaiKyaTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		741909D0373C674030878E81 /* [CP] Check Pods Manifest.lock */ = {
@@ -314,7 +314,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-chkrn-chkrnTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-CasHaiKya-CasHaiKyaTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -327,15 +327,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-chkrn/Pods-chkrn-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-CasHaiKya/Pods-CasHaiKya-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-chkrn/Pods-chkrn-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-CasHaiKya/Pods-CasHaiKya-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-chkrn/Pods-chkrn-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CasHaiKya/Pods-CasHaiKya-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A54531C76FB529EEA9B8DD5C /* [CP] Check Pods Manifest.lock */ = {
@@ -353,7 +353,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-chkrn-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-CasHaiKya-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -366,15 +366,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-chkrn/Pods-chkrn-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-CasHaiKya/Pods-CasHaiKya-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-chkrn/Pods-chkrn-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-CasHaiKya/Pods-CasHaiKya-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-chkrn/Pods-chkrn-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CasHaiKya/Pods-CasHaiKya-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -403,7 +403,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* chkrnTests.m in Sources */,
+				00E356F31AD99517003FC87E /* CasHaiKyaTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,7 +421,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* chkrn */;
+			target = 13B07F861A680F5B00A75B9A /* CasHaiKya */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -429,14 +429,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 911451F543EAED493D213D69 /* Pods-chkrn-chkrnTests.debug.xcconfig */;
+			baseConfigurationReference = 911451F543EAED493D213D69 /* Pods-CasHaiKya-CasHaiKyaTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = chkrnTests/Info.plist;
+				INFOPLIST_FILE = "CasHaiKyaTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -450,17 +450,17 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/chkrn.app/chkrn";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CasHaiKya.app/CasHaiKya";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7193318282B712EA7E27B90E /* Pods-chkrn-chkrnTests.release.xcconfig */;
+			baseConfigurationReference = 7193318282B712EA7E27B90E /* Pods-CasHaiKya-CasHaiKyaTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = chkrnTests/Info.plist;
+				INFOPLIST_FILE = "CasHaiKyaTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -474,19 +474,20 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/chkrn.app/chkrn";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CasHaiKya.app/CasHaiKya";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 038D2CB97BD04A4F25648CDC /* Pods-chkrn.debug.xcconfig */;
+			baseConfigurationReference = 038D2CB97BD04A4F25648CDC /* Pods-CasHaiKya.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = chkrn/Info.plist;
+				INFOPLIST_FILE = "CasHaiKya/Info.plist";
+             INFOPLIST_KEY_CFBundleDisplayName = "CasHaiKya";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -497,7 +498,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = chkrn;
+				PRODUCT_NAME = "CasHaiKya";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -506,12 +507,13 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2B252D3F3FF6D2DF148DD2B2 /* Pods-chkrn.release.xcconfig */;
+			baseConfigurationReference = 2B252D3F3FF6D2DF148DD2B2 /* Pods-CasHaiKya.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = chkrn/Info.plist;
+				INFOPLIST_FILE = "CasHaiKya/Info.plist";
+             INFOPLIST_KEY_CFBundleDisplayName = "CasHaiKya";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -522,7 +524,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = chkrn;
+				PRODUCT_NAME = "CasHaiKya";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -656,7 +658,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "chkrnTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "CasHaiKyaTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -665,7 +667,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "chkrn" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "CasHaiKya" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -674,7 +676,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "chkrn" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "CasHaiKya" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
